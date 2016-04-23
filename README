@@ -1,0 +1,8 @@
+"Quantum Performance Effects 2: Beyond The Core" Demo files
+--------------------------------------------------------------------------
+
+These tests were used in "Quantum Performance Effects 2: Beyond the Core" presentation.
+
+Tests are created with JMH (Java Microbenchmark Harness):
+    http://openjdk.java.net/projects/code-tools/jmh/
+
