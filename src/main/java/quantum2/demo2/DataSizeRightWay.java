@@ -1,5 +1,6 @@
 package quantum2.demo2;
 
+import quantum2.Utils;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -18,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.AverageTime)
 @State(Scope.Benchmark)
-@Fork(1)
+@Fork(3)
 @Warmup(iterations = 3)
 @Measurement(iterations = 5)
 public class DataSizeRightWay {
@@ -29,15 +30,10 @@ public class DataSizeRightWay {
     public void setup() {
         Random rnd = new Random();
         Arrays.setAll(data, i -> new byte[512 * 1024 + rnd.nextInt(64 * 1024)]);
-//        System.out.println("  4K: "+ Utils.countHitsToStride(data, 4*1024));
-//        System.out.println(" 32K: "+ Utils.countHitsToStride(data, 32*1024));
-//        System.out.println("256K: "+ Utils.countHitsToStride(data, 256*1024));
-//        System.out.println("1M: "+ Utils.countHitsToStride(data, 1024*1024));
-//
-//        System.out.println("  4K: "+ Utils.countStrideDistro(data, 4*1024));
-//        System.out.println(" 32K: "+ Utils.countStrideDistro(data, 32*1024));
-//        System.out.println("256K: "+ Utils.countStrideDistro(data, 256*1024));
-//        System.out.println("1M: "+ Utils.countStrideDistro(data, 1024*1024));
+        System.out.println("  4K: "+ Utils.countStrideDistro(data, 4*1024));
+        System.out.println(" 32K: "+ Utils.countStrideDistro(data, 32*1024));
+        System.out.println("256K: "+ Utils.countStrideDistro(data, 256*1024));
+        System.out.println("1M: "+ Utils.countStrideDistro(data, 1024*1024));
     }
 
     @Benchmark

@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @BenchmarkMode(Mode.AverageTime)
 @State(Scope.Benchmark)
-@Fork(1)
+@Fork(3)
 @Warmup(iterations = 3)
 @Measurement(iterations = 5)
 public class DataSizeWrongWay {

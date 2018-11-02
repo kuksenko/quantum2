@@ -1,6 +1,6 @@
 package quantum2;
 
-import org.openjdk.jol.util.VMSupport;
+import org.openjdk.jol.vm.*;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
@@ -60,16 +60,20 @@ public class Utils {
     }
 
     public static int align(int[] arr, int a) {
-        long lastDataAddr = VMSupport.addressOf(arr);
+        long lastDataAddr = VM.current().addressOf(arr);
         long start = lastDataAddr + Unsafe.ARRAY_INT_BASE_OFFSET;
         return (int) (align(start, a) - start)/Unsafe.ARRAY_INT_INDEX_SCALE;
+    }
+
+    public static long address(Object o) {
+        return VM.current().addressOf(o);
     }
 
 
     public static int countHitsToStride(byte[][] arr, int stride) {
         Set<Long> set = new HashSet<Long>();
         for(byte[] d: arr) {
-            set.add((VMSupport.addressOf(d) % stride)>>6);
+            set.add(VM.current().addressOf(d) % stride);
         }
         return set.size();
     }
@@ -77,7 +81,7 @@ public class Utils {
     public static String countStrideDistro(byte[][] arr, int stride) {
         Map<Long, Integer> map = new HashMap<Long, Integer>();
         for(byte[] d: arr) {
-            map.compute((VMSupport.addressOf(d) % stride)>>6, (k, v) -> (v == null) ? 1 : v+1);
+            map.compute((VM.current().addressOf(d) % stride)>>6, (k, v) -> (v == null) ? 1 : v+1);
         }
         List<Integer> l = new ArrayList<>(map.values());
         Collections.sort(l, Comparator.reverseOrder());

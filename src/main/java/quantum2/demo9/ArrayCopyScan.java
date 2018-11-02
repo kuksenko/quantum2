@@ -22,7 +22,7 @@ import org.openjdk.jmh.runner.options.Options;
 import org.openjdk.jmh.runner.options.OptionsBuilder;
 import org.openjdk.jmh.runner.options.TimeValue;
 import org.openjdk.jmh.runner.options.VerboseMode;
-import org.openjdk.jol.util.VMSupport;
+import org.openjdk.jol.vm.*;
 import sun.misc.Unsafe;
 
 import java.util.concurrent.TimeUnit;
@@ -56,14 +56,14 @@ public class ArrayCopyScan {
     public void setupData() throws InterruptedException {
         data = new byte[STORAGE_SIZE];
         System.gc();
-        lastDataAddr = VMSupport.addressOf(data);
+        lastDataAddr = VM.current().addressOf(data);
         long start = lastDataAddr + Unsafe.ARRAY_BYTE_BASE_OFFSET;
         from = (int) (align(start, 4 * K) - start);
     }
 
     @Setup(Level.Iteration)
     public void setUp() throws InterruptedException {
-        long addr = VMSupport.addressOf(data);
+        long addr = VM.current().addressOf(data);
         if (lastDataAddr != addr) {
             throw new IllegalStateException("Move detected: " + lastDataAddr + " " + addr);
         }
@@ -126,7 +126,6 @@ public class ArrayCopyScan {
                     .include(ArrayCopyScan.class.getName())
                     .param("copySize", String.valueOf(copySize))
                     .forks(1)
-//                    .jvmArgsAppend("-XX:UseAVX=0", "-XX:UseSSE=0")
                     .warmupIterations(3)
                     .measurementIterations(3)
                     .warmupTime(TimeValue.milliseconds(100))

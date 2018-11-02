@@ -18,14 +18,18 @@ import java.util.concurrent.TimeUnit;
 @BenchmarkMode(Mode.AverageTime)
 @State(Scope.Benchmark)
 @Fork(1)
-@Warmup(iterations = 3)
-@Measurement(iterations = 3)
+@Warmup(iterations=3)
+@Measurement(iterations=3)
 public class BytesToIntAndViceVersa {
 
     ByteBuffer buf;
 
-    byte b0, b1, b2, b3;
-    int i0;
+    public byte b0;
+    public byte b1;
+    public byte b2;
+    public byte b3;
+
+    public int  i0;
 
     @Setup
     public void setup() {
